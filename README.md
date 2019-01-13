@@ -7,6 +7,6 @@ Teste prático E-Turn
 2. Fazer o download dos arquivos e colocá-los no servidor. (Caso seja o xampp, na pasta htdocs) 
 3. Depois que iniciar o servidor basta acessar a url:
 
-http://localhost/gerenciacontato/
+http://localhost/gestaocontatos/
 
 Caso tenha dúvida entre em contato: maisasb15@gmail.com
