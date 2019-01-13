@@ -1,0 +1,172 @@
+<form id="form" name="form" ng-show="showAddForm" ng-submit="processaFormContato()">
+
+	<div class="row m-bottom">
+		<div class="col title">
+			Cadastrar contato
+		</div>
+		
+	</div>
+	<div id="error-message" name="error-message" ng-show="errorMessage" class="alert alert-danger" role="alert">
+	  O formulário possui erros, favor verificar os campos
+	</div> 
+
+ <div class="card">
+	  <div class="card-header">
+	    Informações gerais
+	  </div>
+	  <div class="card-body">
+                   
+			<div class="form-group row">
+				<label class="col-lg-3 text-right">
+					<strong>Nome completo*:</strong>
+				</label>
+				<div class="col-lg-3">
+					<input type="text" name="name" class="form-control form-control-sm" ng-model="contato.nome" required>
+					<span class="error" ng-show="form.name.$touched && form.name.$invalid"> <i class="fas fa-info-circle"></i> O campo nome precisa ser preenchido</span>
+				</div>
+			</div>	
+
+			<div class=" form-group row">
+				<label class="col-lg-3 text-right">
+					<strong>E-mail*:</strong>
+				</label>
+				<div class="col-lg-3">
+					<input id="email" type="email" pattern="[^ @]*@[^ @]*" name="email" class="form-control form-control-sm" ng-model="contato.email" required>
+					<span class="error" ng-show="messages.email"> <i class="fas fa-info-circle"></i> {{messages.email}}</span>
+					<span class="error" ng-show="form.email.$touched && form.email.$invalid"> <i class="fas fa-info-circle"></i> O campo e-mail precisa ser preenchido corretamente</span>
+				</div>
+			</div>	
+			
+			<div class=" form-group row">
+				<label class="col-lg-3 text-right">
+					Telefones:
+				</label>
+				<div class="col-lg-2">      
+					<input type="text" class="form-control form-control-sm" ng-model="phone.number" ui-mask="{{phoneMask}}" mask-change="phoneMask"><span class="error" ng-show="messages.phone"> <i class="fas fa-info-circle"></i> {{messages.phone}}</span>	
+				</div>
+				<div class="col-lg-2">
+					<button type="button" class="btn btn-sm btn-info " ng-click="addPhone()">Adicionar telefone <i class="fas fa-chevron-circle-down"></i></button>			
+				</div>
+				                      
+			</div>
+
+			<div class="form-group row">
+				<div class="col-lg-4 offset-lg-3">
+					<div class="card" >
+					  <div class="card-header">
+					    Telefones
+					  </div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item" ng-show="contato.phones.length == 0">
+							<div  class="alert alert-warning info-inside" role="alert">
+							  Nenhum telefone adicionado
+							</div>
+						</li>
+						<li class="list-group-item" ng-repeat="phone in contato.phones">
+							<span class="col-lg-11"> {{ phone.number }}</span>
+							<span class="col-lg-1">
+								<button type="button" class="btn btn-sm btn-secondary" ng-click="removePhone(phone)"><i class="fas fa-trash-alt"></i></button>
+							</span>
+						</li>
+					</ul>
+					</div>
+				</div> 
+			</div>
+
+			<div class="form-group row">
+				<label class="col-lg-3 text-right">
+					Observação do contato:
+				</label>
+				<div class="col-lg-4">
+					<textarea type="text" class="form-control" ng-model="contato.observation"></textarea>
+				</div>
+			</div> 
+
+		</div>
+
+	</div>
+
+
+	
+	
+	<div class="card">
+	  <div class="card-header">
+	    Endereços
+	  </div>
+	  <div class="card-body">
+	
+			<div class="form-group row">
+				<label class="col-lg-3 text-right">
+					Cep:
+				</label>
+				<div class="col-lg-2">      
+					<input type="text" ng-model="address.cep" class="form-control form-control-sm" ui-mask="99.999.999">			
+				</div>
+				<div class="col-lg-2">
+					<button type="button" class="btn btn-sm btn-secondary " ng-click="searchAddress()"><i class="fas fa-search" style="font-size: 12px;"></i> Buscar cep </button>
+				</div>	
+				<div class="col-lg-3">
+					<span class="error" ng-show="messages.cep"> <i class="fas fa-info-circle"></i> {{messages.cep}}</span>
+				</div>	            
+			</div>
+			<div>
+				<div class="row">					
+					<label class="col-lg-3 text-right">Cidade:  </label>
+					<div class="col-lg-2"><input type="text" class="form-control form-control-sm" ng-model="address.cidade">
+					<span class="error" ng-show="messages.cidade"> <i class="fas fa-info-circle"></i> {{messages.cidade}}</span></div>
+					<label class="col-lg-1 text-right">Bairro:  </label>
+					<div class="col-lg-2"><input type="text" class="form-control form-control-sm" ng-model="address.bairro"></div>			
+					<label class="col-lg-1 text-right">UF: </label>
+					<div class="col-lg-1"><input type="text" class="form-control form-control-sm" ng-model="address.uf"></div>
+				</div>   
+				<div class="row">
+					<label class="col-lg-3 text-right">Logradouro:  </label>
+					<div class="col-lg-2"><input type="text" class="form-control form-control-sm" ng-model="address.logradouro"></div>
+					<label class="col-lg-2 text-right">Numero:  </label>
+					<div class="col-lg-1"><input type="text" class="form-control form-control-sm" ng-model="address.numero"></div>
+				</div>
+				<hr/>
+				<div class="form-group text-center">
+					<button type="button" class="btn btn-sm btn-info " ng-click="addAddress()">Adicionar endereço <i class="fas fa-chevron-circle-down"></i></button>
+				</div>
+			</div>  
+			<table class="table">
+			  <thead>
+			    <tr>
+			      <th scope="col">CEP</th>
+			      <th scope="col">Cidade</th>
+			      <th scope="col">Bairro</th>
+			      <th scope="col">Logradouro</th>
+			      <th scope="col">Numero</th>
+			      <th></th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr ng-repeat="address in contato.addresses">			     
+			      <td>{{address.cep}}</td>
+			      <td>{{address.cidade}}</td>
+			      <td>{{address.bairro}}</td>
+			      <td>{{address.logradouro}}</td>
+			      <td>{{address.numero}}</td>
+			      <td><button type="button" class="btn btn-sm btn-secondary" ng-click="removeAddress(address)"><i class="fas fa-trash-alt"></i></button></td>
+			    </tr>			    
+			  </tbody>
+			</table>
+			<div ng-show="contato.addresses.length == 0" class="alert alert-warning info-inside" role="alert">
+			  Nenhum endereço adicionado
+			</div>
+		</div>
+	</div>
+
+
+	<div class="row form-group">
+		<div class="col-lg-12 text-right">
+			<button type="button" class="btn btn-light" ng-click="hideForm()">Cancelar</button>
+			<button class="btn btn-primary col-lg-3" type="submit" >
+				Cadastrar
+			</button>
+		</div>
+	</div>
+
+	
+</form>
